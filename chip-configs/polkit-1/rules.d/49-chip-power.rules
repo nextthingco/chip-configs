@@ -1,0 +1,18 @@
+// Let the admin (sudo) user power off / reboot without a polkit auth prompt.
+// pocket-home's power buttons run `systemctl poweroff` / `systemctl reboot`
+// directly (PowerPageComponent.cpp), which goes through logind + polkit. polkit
+// only skips the password for a session logind marks "active" on the seat, and a
+// plain startx session often isn't -> the auth_admin prompt. This grants it
+// unconditionally for sudo-group users (chip is one), so it also works over SSH.
+// Filename 49- so it is evaluated before the stock 50-default.rules.
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.login1.power-off" ||
+         action.id == "org.freedesktop.login1.power-off-multiple-sessions" ||
+         action.id == "org.freedesktop.login1.reboot" ||
+         action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+         action.id == "org.freedesktop.login1.halt" ||
+         action.id == "org.freedesktop.login1.halt-multiple-sessions") &&
+        subject.isInGroup("sudo")) {
+        return polkit.Result.YES;
+    }
+});

@@ -1,3 +1,12 @@
+chip-configs (1.1) trixie; urgency=low
+
+  * Add polkit-1/rules.d/49-chip-power.rules: let sudo-group users power off /
+    reboot / halt without an auth prompt, so pocket-home's power buttons (which
+    call `systemctl poweroff`/`reboot` directly) work even when logind doesn't
+    consider the startx session active.
+
+ -- Ben Young <computermouth@proton.me>  Thu, 19 Jun 2026 16:00:00 -0500
+
 chip-configs (1.0) trixie; urgency=low
 
   * Repurpose for the trixie x-chip-os images: this package is now the CHIP

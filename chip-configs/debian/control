@@ -1,15 +1,20 @@
-Source: chip-mconfigs
+Source: chip-configs
 Section: misc
-Priority: extra
-Maintainer: Ben Young <benjamin@nextthing.co>
+Priority: optional
+Maintainer: Ben Young <computermouth@proton.me>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.5
-Homepage: nextthing.co
-Github: github.com/NextThingCo
+Homepage: github.com/NextThingCo
 
-Package: chip-mconfigs
+Package: chip-configs
 Architecture: all
-Provides: chip-configs
 Depends: ${misc:Depends}
-Description: Userspace configuration for Chip.
- Chip configs for themeing and functionality of openbox and tint2.
+Provides: chip-mconfigs
+Replaces: chip-mconfigs
+Conflicts: chip-mconfigs
+Description: Base hardware configuration for the NextThing C.H.I.P.
+ Flavor-independent, non-GUI hardware configuration: ALSA dmix software mixing,
+ the resistive touchscreen (sun4i-ts) calibration + stable symlink, the PocketCHIP
+ keyboard layout, backlight udev, and the power-button policy (a tap does not
+ power off; the AXP209 hardware long-press still does). The X bits are no-ops
+ without an X server, so this is safe on headless too.

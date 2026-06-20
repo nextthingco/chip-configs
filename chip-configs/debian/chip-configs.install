@@ -1,0 +1,4 @@
+asound.conf /etc/
+X11/* /usr/share/X11/
+rules.d/* /etc/udev/rules.d/
+systemd/logind.conf.d/* /etc/systemd/logind.conf.d/

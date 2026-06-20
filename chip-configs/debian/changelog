@@ -1,3 +1,17 @@
+chip-configs (1.0) trixie; urgency=low
+
+  * Repurpose for the trixie x-chip-os images: this package is now the CHIP
+    hardware/base config (flavor-agnostic, non-GUI). The desktop look-and-feel
+    moves to the new chip-desktop-configs and pocketchip-specifics stay in
+    pocketchip-configs. Contents: /etc/asound.conf (ALSA dmix, from the old skel
+    .asoundrc), sun4i-ts touchscreen calibration + udev symlink, the PocketCHIP
+    keyboard (xkb symbols + xorg InputClass), backlight udev, and the logind
+    power-key override (a tap no longer powers off; the AXP209 hardware long-press
+    still does). Binary renamed back to chip-configs (was chip-mconfigs);
+    Provides/Replaces/Conflicts chip-mconfigs.
+
+ -- Ben Young <computermouth@proton.me>  Thu, 19 Jun 2026 14:00:00 -0500
+
 chip-mconfigs (0.29) stable; urgency=low
 
   * Sync fs on first boot once in graphical env

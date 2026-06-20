@@ -1,3 +1,0 @@
-#!/bin/bash
-
-[ ! -f /home/${USER}/.config/chip-sync ] && $(touch /home/${USER}/.config/chip-sync && sync)

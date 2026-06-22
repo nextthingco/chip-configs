@@ -1,0 +1,11 @@
+// Let sudo-group users control NetworkManager (nmtui/nmcli) from a non-active
+// session. The CHIP runs X via `startx`, which yields a logind session that is
+// not "active"; NetworkManager's shipped policy grants its actions to
+// allow_active=yes only, so an inactive session gets "Not authorized to control
+// networking". Mirror of 49-chip-power.rules for the NM action namespace.
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("org.freedesktop.NetworkManager.") === 0 &&
+        subject.isInGroup("sudo")) {
+        return polkit.Result.YES;
+    }
+});

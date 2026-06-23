@@ -3,3 +3,4 @@ X11/* /usr/share/X11/
 rules.d/* /etc/udev/rules.d/
 polkit-1/rules.d/* /etc/polkit-1/rules.d/
 systemd/logind.conf.d/* /etc/systemd/logind.conf.d/
+Xsession.d/50chip-home-dirs /etc/X11/Xsession.d/

@@ -1,3 +1,16 @@
+chip-configs (1.3) trixie; urgency=low
+
+  * Add Xsession.d/50chip-home-dirs: at desktop session start, create the standard
+    home folders (documents downloads music images tmp videos) and append them to
+    ~/.gtk-bookmarks for the GTK2 file manager. Idempotent + non-destructive
+    (preserves existing bookmarks); skips root. Installed to /etc/X11/Xsession.d/,
+    which /etc/X11/Xsession sources for every X session (the stock xinitrc delegates
+    to Xsession, NOT to xinitrc.d) -- so it runs for gui & pocketchip startx
+    sessions before the WM. Deliberately not a login-shell hook -- headless has no
+    desktop and doesn't need these dirs.
+
+ -- Ben Young <computermouth@proton.me>  Tue, 23 Jun 2026 19:00:00 -0500
+
 chip-configs (1.2) trixie; urgency=low
 
   * Add polkit-1/rules.d/50-chip-network.rules: let sudo-group users control

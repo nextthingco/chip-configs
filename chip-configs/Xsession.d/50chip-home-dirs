@@ -1,0 +1,24 @@
+# Ensure the standard CHIP home folders exist and are bookmarked in the GTK2 file
+# manager (pcmanfm reads ~/.gtk-bookmarks). Installed to /etc/X11/Xsession.d/,
+# which /etc/X11/Xsession SOURCES for every X session. On this Debian the stock
+# /etc/X11/xinit/xinitrc does `. /etc/X11/Xsession` (it does NOT iterate xinitrc.d),
+# so Xsession.d is the hook that actually runs for `startx` -- i.e. the gui &
+# pocketchip flavors. Numbered 50 so it runs before 99x11-common_start execs the WM.
+# Deliberately NOT a login-shell hook (/etc/profile.d): headless has no desktop and
+# doesn't need these dirs. Sourced (not executed) -- POSIX sh, no exec bit needed;
+# always returns 0 at top level so it can't abort the session. Idempotent and
+# non-destructive: dirs use `mkdir -p` and each bookmark is appended only if absent,
+# so existing bookmarks (e.g. a user's own backup/bin) are preserved.
+
+# Only for a real interactive user with a writable home; never root.
+if [ -n "$HOME" ] && [ -w "$HOME" ] && [ "$(id -u)" -ne 0 ]; then
+    chip_bookmarks="$HOME/.gtk-bookmarks"
+    for chip_dir in documents downloads music images tmp videos; do
+        [ -d "$HOME/$chip_dir" ] || mkdir -p "$HOME/$chip_dir"
+        chip_line="file://$HOME/$chip_dir"
+        if [ ! -e "$chip_bookmarks" ] || ! grep -qxF "$chip_line" "$chip_bookmarks"; then
+            printf '%s\n' "$chip_line" >> "$chip_bookmarks"
+        fi
+    done
+    unset chip_bookmarks chip_dir chip_line
+fi

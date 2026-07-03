@@ -1,3 +1,30 @@
+chip-configs (1.5) trixie; urgency=low
+
+  * Fix flaky rtl8723bs (r8723bs) wifi: disable the driver's firmware power-save.
+    LPS (rtw_power_mgnt) and especially IPS (rtw_ips_mode) gate the SDIO clock
+    mid-transfer, throwing "sunxi-mmc: data error, sending stop command" and
+    "r8723bs sd_recv_rxfifo: alloc recvbuf FAIL" storms that stall RX and break
+    association. Confirmed on-device that rtw_power_mgnt=0 rtw_ips_mode=0 clears it
+    -- NOT a memory or SDIO-clock issue (the DTS already caps to 1-bit/25 MHz).
+    - modprobe.d/r8723bs.conf: options r8723bs rtw_power_mgnt=0 rtw_ips_mode=0
+    - NetworkManager/conf.d/wifi-powersave.conf: wifi.powersave=2, so NM doesn't
+      re-enable LPS over nl80211 after association.
+    Hardware-level, so it ships here for all three flavors. See docs/wifi-rtl8723bs.md.
+
+ -- Ben Young <computermouth@proton.me>  Thu, 02 Jul 2026 13:00:00 -0500
+
+chip-configs (1.4) trixie; urgency=low
+
+  * Ship a known-good ALSA mixer state at /var/lib/alsa/asound.state so audio works
+    out of the box. The sun4i-codec boots with its whole output stage shut: Power
+    Amplifier Volume at 0 (-63 dB), 'Power Amplifier Mute Switch' off, and the
+    'Power Amplifier DAC Playback Switch' routing off -- so aplay plays into a dead
+    amp and you hear nothing. alsa-utils' alsa-restore.service applies this state
+    from that path at boot (hence the new alsa-utils dependency), un-muting and
+    routing the DAC->amp path on every flavor (same codec on headless/gui/pocketchip).
+
+ -- Ben Young <computermouth@proton.me>  Thu, 02 Jul 2026 12:00:00 -0500
+
 chip-configs (1.3) trixie; urgency=low
 
   * Add Xsession.d/50chip-home-dirs: at desktop session start, create the standard

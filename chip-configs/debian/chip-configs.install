@@ -1,4 +1,7 @@
 asound.conf /etc/
+asound.state /var/lib/alsa/
+modprobe.d/* /etc/modprobe.d/
+NetworkManager/conf.d/* /etc/NetworkManager/conf.d/
 X11/* /usr/share/X11/
 rules.d/* /etc/udev/rules.d/
 polkit-1/rules.d/* /etc/polkit-1/rules.d/

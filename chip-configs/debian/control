@@ -8,7 +8,7 @@ Homepage: github.com/NextThingCo
 
 Package: chip-configs
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends}, alsa-utils
 Provides: chip-mconfigs
 Replaces: chip-mconfigs
 Conflicts: chip-mconfigs

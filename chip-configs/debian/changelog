@@ -1,3 +1,29 @@
+chip-configs (1.7) trixie; urgency=low
+
+  * NM/conf.d: disable MAC randomization for wifi (rename wifi-powersave.conf ->
+    10-chip-wifi.conf and consolidate). The rtl8723bs can't do runtime MAC
+    changes -- NM's default scan/per-connection MAC randomization triggers
+    "set-hw-addr: ... not successfully set (scanning)" warnings on every scan and
+    NM retries, adding seconds per rescan on first connect. wifi.scan-rand-mac-
+    address=no and wifi.cloned-mac-address=permanent stop it. Doesn't fix
+    AP-side association-flapping on mesh networks (that's the AP steering
+    between BSSes), but stops making it worse.
+
+ -- Ben Young <computermouth@proton.me>  Mon, 07 Jul 2026 12:00:00 -0500
+
+chip-configs (1.6) trixie; urgency=low
+
+  * Add rtw_wifi_spec=1 to modprobe.d/r8723bs.conf. Some stricter enterprise/mesh
+    AP firmware rejects the driver's default association-request form with an
+    immediate "ASSOC_REJECT status_code=1 (unspecified failure)" -- clean
+    RSN/CCMP/permanent-MAC/dmesg-clean, still rejected. rtw_wifi_spec=1 enforces
+    strict 802.11 spec compliance in the assoc request (IE ordering, cap
+    advertisement, timing) and the mesh accepts it. Verified on-device after
+    every other client-side variable had been ruled out (PMF, FT, WPS, MAC-rand,
+    HT/11n, regdom, power-save). No downside for cooperative APs.
+
+ -- Ben Young <computermouth@proton.me>  Sun, 06 Jul 2026 12:00:00 -0500
+
 chip-configs (1.5) trixie; urgency=low
 
   * Fix flaky rtl8723bs (r8723bs) wifi: disable the driver's firmware power-save.
